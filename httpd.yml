@@ -1,0 +1,10 @@
+- hosts: default-testvm
+  become: true
+  tasks:
+    - name: Install httpd
+      ansible.builtin.package:
+        name: httpd
+    - name: Start httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started

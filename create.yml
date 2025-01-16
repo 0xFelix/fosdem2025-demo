@@ -1,0 +1,34 @@
+- hosts: localhost
+  tasks:
+    - kubevirt.core.kubevirt_vm:
+        name: testvm
+        namespace: default
+        instancetype:
+          name: my-it
+        preference:
+          name: my-pref
+        spec:
+          domain:
+            devices:
+              interfaces:
+                - name: default
+                  masquerade: {}
+                - name: bridge-network
+                  bridge: {}
+          networks:
+            - name: default
+              pod: {}
+            - name: bridge-network
+              multus:
+                networkName: kindexgw
+          volumes:
+            - containerDisk:
+                image: quay.io/containerdisks/fedora:latest
+              name: containerdisk
+            - cloudInitNoCloud:
+                userData: |-
+                  #cloud-config
+                  ssh_authorized_keys:
+                    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILe9kaZVLVoGsFGmdmlR1jZLKwh88/Qlz7KgU17AY1s7
+              name: cloudinit
+        wait: true
