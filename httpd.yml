@@ -1,3 +1,4 @@
+---
 - hosts: default-testvm
   become: true
   tasks:
